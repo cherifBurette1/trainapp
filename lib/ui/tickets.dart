@@ -6,13 +6,16 @@ import 'package:railway/ApiFunctions/Api.dart';
 import 'package:railway/models/tickets.dart';
 import 'package:railway/utils/colors_file.dart';
 import 'package:railway/utils/global_vars.dart';
-
+import 'package:railway/map.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 int counter = 0;
+String startloc;
+String endloc;
+DateTime asas;
 
 class Tickets extends StatefulWidget {
   @override
@@ -120,187 +123,206 @@ class _TicketsState extends State<Tickets> {
                   // padding: EdgeInsets.all(20),
                   itemCount: ticketsList.length,
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Stack(
+                    return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            startloc =
+                                "${ticketsList[index].tripData.trip.destinationStation.name}";
+                            endloc =
+                                "${ticketsList[index].tripData.trip.baseStation.name}";
+                          });
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                builder: (context) => Mapss(),
+                              ));
+                        },
+                        child: Column(
                           children: [
-                            Center(
-                              child: Image.asset(
-                                "images/ticket_sample1.png",
-                                height: 130,
-                                color: blackColor,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 200, top: 20),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "${userId}",
-                                style:
-                                    TextStyle(fontSize: 15, color: whiteColor),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 200, top: 50),
-                              alignment: Alignment.topCenter,
-                              child: SvgPicture.asset(
-                                "images/train.svg",
-                                color: blueAppColor,
-                                height: 30,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 200, top: 100),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "${ticketsList[index].tripData.price} EGP",
-                                style:
-                                    TextStyle(fontSize: 15, color: whiteColor),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(right: 200, top: 20),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "${ticketsList[index].tripData.trip.baseStation.name.toString()}",
-                                style:
-                                    TextStyle(fontSize: 15, color: whiteColor),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 20),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "${ticketsList[index].tripData.trip.destinationStation.name}",
-                                style:
-                                    TextStyle(fontSize: 15, color: whiteColor),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(right: 200, top: 55),
-                              alignment: Alignment.topCenter,
-                              child: Icon(
-                                Icons.airline_seat_recline_normal_sharp,
-                                color: whiteColor,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 60),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "Class ${ticketsList[index].tripData.Class}",
-                                style:
-                                    TextStyle(fontSize: 15, color: whiteColor),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(right: 200, top: 100),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "${ticketsList[index].tripData.trip.departTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.departTime.split(":")[1]}",
-                                style:
-                                    TextStyle(fontSize: 15, color: whiteColor),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 100),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "${ticketsList[index].tripData.trip.arrivalTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.arrivalTime.split(":")[1]}",
-                                style:
-                                    TextStyle(fontSize: 15, color: whiteColor),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                "${ticketsList[index].ticketTime.split(".")[0].split("T")}",
-                                style: TextStyle(color: blueAppColor),
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.delete_forever,
-                                  color: redColor,
+                            Stack(
+                              children: [
+                                Center(
+                                  child: Image.asset(
+                                    "images/ticket_sample1.png",
+                                    height: 130,
+                                    color: blackColor,
+                                  ),
                                 ),
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          backgroundColor: Color(0xff1D1D1D),
-                                          title: Text(
-                                            "Delete Ticket ?",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          actions: [
-                                            FlatButton(
-                                                onPressed: () {
-                                                  Api(context).deleteTicketApi(
-                                                      _scaffoldKey,
-                                                      ticketsList[index]
-                                                          .seatId);
-                                                },
-                                                child: Text(
-                                                  "delete",
-                                                )),
-                                            FlatButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text(
-                                                  "cancel",
-                                                )),
-                                          ],
-                                          content: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.15,
-                                            child: Center(
-                                              child: Text(
-                                                " Delete This Ticket ?",
+                                Container(
+                                  margin: EdgeInsets.only(left: 200, top: 20),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "${userId}",
+                                    style: TextStyle(
+                                        fontSize: 15, color: whiteColor),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 200, top: 50),
+                                  alignment: Alignment.topCenter,
+                                  child: SvgPicture.asset(
+                                    "images/train.svg",
+                                    color: blueAppColor,
+                                    height: 30,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 200, top: 100),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "${ticketsList[index].tripData.price} EGP",
+                                    style: TextStyle(
+                                        fontSize: 15, color: whiteColor),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 200, top: 20),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "${ticketsList[index].tripData.trip.baseStation.name.toString()}",
+                                    style: TextStyle(
+                                        fontSize: 15, color: whiteColor),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 20),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "${ticketsList[index].tripData.trip.destinationStation.name}",
+                                    style: TextStyle(
+                                        fontSize: 15, color: whiteColor),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 200, top: 55),
+                                  alignment: Alignment.topCenter,
+                                  child: Icon(
+                                    Icons.airline_seat_recline_normal_sharp,
+                                    color: whiteColor,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 60),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "Class ${ticketsList[index].tripData.Class}",
+                                    style: TextStyle(
+                                        fontSize: 15, color: whiteColor),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 200, top: 100),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "${ticketsList[index].tripData.trip.departTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.departTime.split(":")[1]}",
+                                    style: TextStyle(
+                                        fontSize: 15, color: whiteColor),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 100),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "${ticketsList[index].tripData.trip.arrivalTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.arrivalTime.split(":")[1]}",
+                                    style: TextStyle(
+                                        fontSize: 15, color: whiteColor),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    "${ticketsList[index].ticketTime.split(".")[0].split("T")}",
+                                    style: TextStyle(color: blueAppColor),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.delete_forever,
+                                      color: redColor,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              backgroundColor:
+                                                  Color(0xff1D1D1D),
+                                              title: Text(
+                                                "Delete Ticket ?",
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
-                                            ),
-                                          ),
-                                        );
-                                      });
-                                },
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              actions: [
+                                                FlatButton(
+                                                    onPressed: () {
+                                                      Api(context)
+                                                          .deleteTicketApi(
+                                                              _scaffoldKey,
+                                                              ticketsList[index]
+                                                                  .seatId);
+                                                    },
+                                                    child: Text(
+                                                      "delete",
+                                                    )),
+                                                FlatButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text(
+                                                      "cancel",
+                                                    )),
+                                              ],
+                                              content: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.15,
+                                                child: Center(
+                                                  child: Text(
+                                                    " Delete This Ticket ?",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          });
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.save,
+                                      color: Colors.pink,
+                                    ),
+                                    onPressed: () {
+                                      _createPDF(
+                                          "${userId}",
+                                          "${ticketsList[index].tripData.trip.baseStation.name.toString()}",
+                                          "${ticketsList[index].tripData.trip.destinationStation.name}",
+                                          "${ticketsList[index].tripData.trip.departTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.departTime.split(":")[1]}",
+                                          "${ticketsList[index].tripData.trip.arrivalTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.arrivalTime.split(":")[1]}",
+                                          "${ticketsList[index].tripData.Class}",
+                                          "${ticketsList[index].tripData.price} EGP");
+                                    },
+                                  ),
+                                ],
                               ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.save,
-                                  color: Colors.pink,
-                                ),
-                                onPressed: () {
-                                  _createPDF(
-                                      "${userId}",
-                                      "${ticketsList[index].tripData.trip.baseStation.name.toString()}",
-                                      "${ticketsList[index].tripData.trip.destinationStation.name}",
-                                      "${ticketsList[index].tripData.trip.departTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.departTime.split(":")[1]}",
-                                      "${ticketsList[index].tripData.trip.arrivalTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.arrivalTime.split(":")[1]}",
-                                      "${ticketsList[index].tripData.Class}",
-                                      "${ticketsList[index].tripData.price} EGP");
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        Divider(
-                          color: blueAppColor,
-                        )
-                      ],
-                    );
+                            ),
+                            Divider(
+                              color: blueAppColor,
+                            )
+                          ],
+                        ));
                   },
                 ),
               ),
