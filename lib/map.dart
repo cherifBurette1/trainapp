@@ -5,13 +5,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'ui/train_tracking/model.dart';
 import 'ui/tickets.dart';
 import 'dart:ui' as ui;
-import 'package:railway/json/alexdam.json';
+
+import 'dart:convert';
+import 'package:flutter/services.dart';
 
 Position _currentPosition;
 var allMarkers = HashSet<Marker>();
 List<Polyline> myPolyline = [];
 BitmapDescriptor customMarker;
-
+dynamic loca = LatLng(31.218610752908937, 29.942156790466374);
 getTrainmarker() async {
   customMarker = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration.empty, 'images/train_png.png');
@@ -28,6 +30,7 @@ class _MapssState extends State<Mapss> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getcurrentlocation();
+      getrainlocation();
       getTrainmarker();
       createPolyline();
     });
@@ -42,7 +45,7 @@ class _MapssState extends State<Mapss> {
           : GoogleMap(
               polylines: myPolyline.toSet(),
               initialCameraPosition: CameraPosition(
-                  target: LatLng(31.218610752908937, 29.942156790466374),
+                  target: loca,
                   // LatLng(
                   //     _currentPosition.latitude, _currentPosition.longitude),
                   zoom: 15),
@@ -51,7 +54,7 @@ class _MapssState extends State<Mapss> {
                   Marker(
                       markerId: MarkerId('train'),
                       icon: customMarker,
-                      position: getrainlocation()),
+                      position: loca),
                 );
                 coffeeShops.forEach((element) {
                   allMarkers.add(Marker(
@@ -96,12 +99,22 @@ class _MapssState extends State<Mapss> {
         ]));
   }
 
-  getrainlocation() {
-    LatLng loc;
-    loc = LatLng(24.1003693156064, 32.899116499355685);
+  getrainlocation() async {
     print(startloc);
     print(endloc);
-
-    return loc;
+    dynamic response = await rootBundle.loadString('assets/json/alexdam.json');
+    dynamic responsedata = await json.decode(response);
+    Future.delayed(const Duration(milliseconds: 200), () {
+      for (int i = 0; i <= 25; i++) {
+        print(loca.latitude.toString() + loca.longtude.toString());
+        setState(() {
+          loca = LatLng(responsedata[i.toString()]['lat'],
+              responsedata[i.toString()]['lng']);
+        });
+        CameraPosition(
+            target: LatLng(responsedata[i.toString()]['lat'],
+                responsedata[i.toString()]['lng']));
+      }
+    });
   }
 }
