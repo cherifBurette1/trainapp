@@ -16,6 +16,7 @@ int counter = 0;
 String startloc;
 String endloc;
 DateTime asas;
+DateTime bsbs;
 
 class Tickets extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _TicketsState extends State<Tickets> {
     });
   }
 
-  final f = new DateFormat('yyyy-MM-dd hh:mm');
+  final fashe = new DateFormat('yyyy-MM-dd hh:mm');
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +131,27 @@ class _TicketsState extends State<Tickets> {
                                 "${ticketsList[index].tripData.trip.destinationStation.name}";
                             endloc =
                                 "${ticketsList[index].tripData.trip.baseStation.name}";
+                            asas = DateTime(
+                                2021,
+                                12,
+                                12,
+                                int.parse(
+                                    "${ticketsList[index].tripData.trip.departTime.split(":")[0]}"),
+                                int.parse(
+                                    "${ticketsList[index].tripData.trip.departTime.split(":")[1]}"));
+                            bsbs = DateTime(
+                                2021,
+                                12,
+                                12,
+                                int.parse(
+                                    "${ticketsList[index].tripData.trip.arrivalTime.split(":")[0]}"),
+                                int.parse(
+                                    "${ticketsList[index].tripData.trip.arrivalTime.split(":")[1]}"));
                           });
+                          setState(() {
+                            refresh = true;
+                          });
+
                           Navigator.push(
                               context,
                               new MaterialPageRoute(
