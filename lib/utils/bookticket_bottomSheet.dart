@@ -114,7 +114,7 @@ class _bookTicketBottomSheetState extends State<bookTicketBottomSheet> {
                     ],
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 15,
                   ),
                   Row(
                     children: [
@@ -136,7 +136,25 @@ class _bookTicketBottomSheetState extends State<bookTicketBottomSheet> {
                     ],
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "- Train number :",
+                        style: TextStyle(fontSize: 20, color: primaryAppColor),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "${widget.success.trainId}",
+                        style: TextStyle(fontSize: 20, color: primaryAppColor),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
                   ),
                   Row(
                     children: [
@@ -177,7 +195,7 @@ class _bookTicketBottomSheetState extends State<bookTicketBottomSheet> {
                 ],
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
             ],
           ),

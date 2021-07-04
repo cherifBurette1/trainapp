@@ -8,6 +8,45 @@ import 'package:railway/utils/colors_file.dart';
 import 'package:railway/utils/custom_widgets/custom_button.dart';
 import 'package:railway/utils/navigator.dart';
 
+dynamic train_id;
+
+class Trip {
+  final int id;
+  final String name;
+
+  Trip({
+    this.id,
+    this.name,
+  });
+}
+
+List<Trip> trips = [
+  Trip(
+    id: 0,
+    name: "car 1",
+  ),
+  Trip(
+    id: 1,
+    name: "car 2",
+  ),
+  Trip(
+    id: 2,
+    name: "car 3",
+  ),
+  Trip(
+    id: 3,
+    name: "car 4",
+  ),
+  Trip(
+    id: 4,
+    name: "car 5",
+  ),
+  Trip(
+    id: 5,
+    name: "car 6",
+  ),
+];
+
 class BookTicket extends StatefulWidget {
   final Success success;
 
@@ -258,6 +297,38 @@ class _BookTicketState extends State<BookTicket> {
                   SizedBox(
                     height: 20,
                   ),
+                  Container(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    width: MediaQuery.of(context).size.width / 3,
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(.1),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: DropdownButton(
+                      icon: Icon(Icons.keyboard_arrow_down,
+                          color: Color(0xffb8c3cb)),
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      dropdownColor: whiteColor,
+                      style: TextStyle(color: blackColor),
+                      value: train_id,
+                      onChanged: (newValue) {
+                        setState(() {
+                          train_id = newValue;
+                          print(train_id);
+                        });
+                      },
+                      hint: Text('car 1'),
+                      items: trips.map((valueItem) {
+                        return DropdownMenuItem(
+                          value: valueItem.id,
+                          child: Text(valueItem.name),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   classACar.length == 0
                       ? Container()
                       : Container(
@@ -338,6 +409,38 @@ class _BookTicketState extends State<BookTicket> {
                   SizedBox(
                     height: 20,
                   ),
+                  Container(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    width: MediaQuery.of(context).size.width / 3,
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(.1),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: DropdownButton(
+                      icon: Icon(Icons.keyboard_arrow_down,
+                          color: Color(0xffb8c3cb)),
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      dropdownColor: whiteColor,
+                      style: TextStyle(color: blackColor),
+                      value: train_id,
+                      onChanged: (newValue) {
+                        setState(() {
+                          train_id = newValue;
+                          print(train_id);
+                        });
+                      },
+                      hint: Text('car 1'),
+                      items: trips.map((valueItem) {
+                        return DropdownMenuItem(
+                          value: valueItem.id,
+                          child: Text(valueItem.name),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   classBCar.length == 0
                       ? Container()
                       : Container(
@@ -395,83 +498,9 @@ class _BookTicketState extends State<BookTicket> {
                   SizedBox(
                     height: 30,
                   ),
-                  classCCar.length == 0
-                      ? Container()
-                      : Card(
-                          margin:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                          color: Colors.white60,
-                          elevation: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: MediaQuery.of(context).size.width,
-                              child: Text(
-                                "Class C",
-                                style: TextStyle(
-                                    fontSize: 20, color: Color(0xFF7F5A01)),
-                              ),
-                            ),
-                          ),
-                        ),
                   SizedBox(
                     height: 20,
                   ),
-                  classCCar.length == 0
-                      ? Container()
-                      : Container(
-                          width: MediaQuery.of(context).size.width,
-                          // height: 50,
-                          child: GridView.builder(
-                            itemCount: classCCar.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              childAspectRatio: 1.5,
-                              mainAxisSpacing: 5,
-                              crossAxisSpacing: 5,
-                            ),
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                  onTap: classCCar[index].status == "available"
-                                      ? () {
-                                          Api(context).bookTicketApi(
-                                              scafoldState,
-                                              classCCar[index].id);
-                                        }
-                                      : () {},
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Stack(
-                                      children: [
-                                        SvgPicture.asset(
-                                          "images/seatIcon.svg",
-                                          width: 50,
-                                          color: classCCar[index].status ==
-                                                  "available"
-                                              ? greenColor
-                                              : redColor,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  25,
-                                              top: 5),
-                                          child:
-                                              Text("${ticketsCounter[index]}"),
-                                          // child: Text("1"),
-                                        )
-                                      ],
-                                    ),
-                                  ));
-                            },
-                          ),
-                        ),
                   SizedBox(
                     height: 20,
                   ),

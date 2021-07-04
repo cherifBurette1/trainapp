@@ -217,7 +217,7 @@ class _MapssState extends State<Mapss> {
       dynamic responsedata1 = await json.decode(response1);
       if (asas.hour > DateTime.now().hour &&
           asas.minute > DateTime.now().minute) {
-        if (responsedata[counter.toString()]['lat'] != false) {
+        if (responsedata[counter.toString()]['lat'] != Null) {
           setState(() {
             counter++;
           });
@@ -255,7 +255,7 @@ class _MapssState extends State<Mapss> {
       dynamic responsedata2 = await json.decode(response2);
       if (asas.hour > DateTime.now().hour &&
           asas.minute > DateTime.now().minute) {
-        if (responsedata[counter.toString()]['lat'] != false) {
+        if (responsedata[counter.toString()]['lat'] != Null) {
           setState(() {
             counter++;
           });

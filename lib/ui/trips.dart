@@ -252,11 +252,20 @@ class _TripsState extends State<Trips> {
                             ),
                           ],
                         ),
-                        SvgPicture.asset(
-                          "images/train.svg",
-                          color: blackColor,
-                          height: 30,
-                        ),
+                        Column(children: [
+                          SvgPicture.asset(
+                            "images/train.svg",
+                            color: blackColor,
+                            height: 30,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("Train Number: " + success.trainId.toString(),
+                              style: TextStyle(
+                                fontSize: 16,
+                              ))
+                        ]),
                         Column(
                           children: [
                             Text("Arrival Time"),
