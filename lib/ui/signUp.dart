@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:railway/ApiFunctions/Api.dart';
 import 'package:railway/ApiFunctions/shared.dart';
 import 'package:railway/models/users.dart';
@@ -11,7 +12,28 @@ import 'package:railway/utils/custom_widgets/custom_button.dart';
 import 'package:railway/utils/custom_widgets/custom_snackBar.dart';
 import 'package:railway/utils/global_vars.dart';
 import 'package:railway/utils/navigator.dart';
+import 'dart:math';
+import 'verify.dart';
+import 'package:mailer/mailer.dart';
 
+sendMail(String mail) async {
+  String username = "railwaymti@gmail.com";
+  String password = "Ab1234566.";
+  final smtpServer = gmail(username, password);
+  final message = Message()
+    ..from = Address(username, 'railwayMTI')
+    ..recipients.add(mail)
+    ..subject = "Railway email verification"
+    ..html =
+        "<p>Railway MTI</p> <hr> <p>Dear user,</p> <p>we are sending you this email to verify your account.</p> <p>please enter this code on your application.</p> <p>Your verification code is</p> <p><strong>$vcode</strong></p> <p>have a good day!</p> <p><br></p>";
+
+  try {
+    final sendReport = await send(message, smtpServer);
+    print('message sent: ' + sendReport.toString());
+  } on MailerException catch (e) {
+    print('message not sent becase of ' + e.toString());
+  }
+}
 
 class SignUp extends StatefulWidget {
   @override
@@ -51,7 +73,7 @@ class _SignUpState extends State<SignUp> {
     "+963",
     "+964",
   ];
-
+  String phoneno;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,9 +99,11 @@ class _SignUpState extends State<SignUp> {
                             height: 50,
                           ),
                         ),
-                        SizedBox(height: MediaQuery.of(context).size.height/15),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height / 15),
                         Text("SIGN UP",
-                            style: TextStyle(color: primaryAppColor, fontSize: 32)),
+                            style: TextStyle(
+                                color: primaryAppColor, fontSize: 32)),
                         SizedBox(height: 30),
                         TextFormField(
                           controller: nameController,
@@ -98,70 +122,6 @@ class _SignUpState extends State<SignUp> {
                               hintStyle: TextStyle(color: greyPrimaryColor)),
                         ),
                         SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.only(left: 10, right: 10),
-                              width: 80,
-                              height: 58,
-                              decoration: BoxDecoration(
-                                  color: greyPrimaryColor.withOpacity(.1),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: DropdownButton(
-                                hint: Text(
-                                  "+20",
-                                  style: TextStyle(
-                                    color: Color(0xffb8c3cb).withOpacity(0.5),
-                                  ),
-                                ),
-                                icon: Icon(Icons.keyboard_arrow_down,
-                                    color: Color(0xffb8c3cb)),
-                                isExpanded: true,
-                                underline: SizedBox(),
-                                dropdownColor: Color(0xff173049),
-                                style: TextStyle(color: whiteColor),
-                                value: valueChoosedPhoneCode,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    valueChoosedPhoneCode = newValue;
-                                  });
-                                },
-                                items: phoneCodeItems.map((valueItem) {
-                                  return DropdownMenuItem(
-                                    value: valueItem,
-                                    child: Text(valueItem),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            SizedBox(
-                              height: 80,
-                              width: MediaQuery.of(context).size.width / 1.61,
-                              child: TextFormField(
-                                controller: phoneController,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                keyboardType: TextInputType.number,
-                                validator: validatePhone,
-                                style: TextStyle(color: whiteColor),
-                                cursorColor: primaryAppColor,
-                                decoration: InputDecoration(
-                                    fillColor: greyPrimaryColor.withOpacity(.1),
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    hintText: 'Phone Number',
-                                    hintStyle: TextStyle(
-                                        color: greyPrimaryColor)),
-                              ),
-                            ),
-                          ],
-                        ),
                         TextFormField(
                           controller: emailController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -228,54 +188,57 @@ class _SignUpState extends State<SignUp> {
                                 if (formKey.currentState.validate()) {
                                   Api(context)
                                       .userRegister(
-                                      scafoldState,
-                                      nameController.text,
-                                      emailController.text,
-                                      passwordController.text,
-                                      passwordController.text,
-                                      phoneController.text)
+                                          scafoldState,
+                                          nameController.text,
+                                          emailController.text,
+                                          passwordController.text,
+                                          passwordController.text,
+                                          phoneno)
                                       .then((value) {
                                     if (value is UsersModel) {
                                       usersModel = value;
-                                      Future.delayed(Duration(milliseconds: 250),
-                                              () {
-                                            print(
-                                                "_isSelected_isSelected ${_isSelected}");
-                                            if (_isSelected) {
-                                              setUserTocken(
-                                                auth_token: usersModel
-                                                    .token.plainTextToken
-                                                    .split("|")[1],
-                                                userId: usersModel.user.id,
-                                                userName: usersModel.user.name,
-                                                userEmail: usersModel.user.email,
-                                                userPhone: usersModel.user.phoneNumber,
-                                                userJoinedTime: usersModel.token.accessToken.createdAt,
-                                              )
-                                                  .then((value) {
-                                                UserTocken =
+                                      Future.delayed(
+                                          Duration(milliseconds: 250), () {
+                                        print(
+                                            "_isSelected_isSelected ${_isSelected}");
+                                        if (_isSelected) {
+                                          setUserTocken(
+                                            auth_token: usersModel
+                                                .token.plainTextToken
+                                                .split("|")[1],
+                                            userId: usersModel.user.id,
+                                            userName: usersModel.user.name,
+                                            userEmail: usersModel.user.email,
+                                            userJoinedTime: usersModel
+                                                .token.accessToken.createdAt,
+                                          ).then((value) {
+                                            UserTocken =
                                                 "Bearer ${usersModel.token.plainTextToken.split("|")[1]}";
-                                                userName = usersModel.user.name;
-                                                userEmail = usersModel.user.email;
-                                                userPhone = usersModel.user.phoneNumber;
-                                                userJoinedTime = usersModel.token.accessToken.createdAt;
-                                                userId = usersModel.user.id;
-                                                navigateAndKeepStack(
-                                                    context, HomePage());
-                                                // navigateAndKeepStack(context,Competitions());
-                                              });
-                                            }
-//talent_id: 46
-                                            else {
-                                              CustomSnackBar(scafoldState, context,
-                                                  "Accept terms and conditions");
-                                              // navigateAndKeepStack(context,Competitions());
-                                            }
+                                            userName = usersModel.user.name;
+                                            userEmail = usersModel.user.email;
+
+                                            userJoinedTime = usersModel
+                                                .token.accessToken.createdAt;
+                                            userId = usersModel.user.id;
+                                            generate();
+                                            sendMail(usersModel.user.email);
+                                            navigateAndKeepStack(
+                                                context, box2());
+                                            // navigateAndKeepStack(context,Competitions());
                                           });
+                                        }
+//talent_id: 46
+                                        else {
+                                          CustomSnackBar(scafoldState, context,
+                                              "Accept terms and conditions");
+                                          // navigateAndKeepStack(context,Competitions());
+                                        }
+                                      });
                                     }
                                   });
-                                }
-                                else CustomSnackBar(scafoldState,context,"Invalid Data !");
+                                } else
+                                  CustomSnackBar(
+                                      scafoldState, context, "Invalid Data !");
                               },
                               child: Container(
                                 padding: EdgeInsets.all(12),
@@ -349,10 +312,19 @@ class _SignUpState extends State<SignUp> {
                 : Border.all(color: greyPrimaryColor, width: 1.0)),
         width: 20,
         height: 20,
-        child:
-            _isSelected ? Icon(Icons.check, size: 15, color: primaryAppColor) : null,
+        child: _isSelected
+            ? Icon(Icons.check, size: 15, color: primaryAppColor)
+            : null,
       ),
     );
+  }
+
+  void generate() {
+    Random random = new Random();
+    int randomNumber = random.nextInt(10000);
+    setState(() {
+      vcode = randomNumber;
+    });
   }
 
   void _validateInputs() {
@@ -366,6 +338,9 @@ class _SignUpState extends State<SignUp> {
   }
 
   String validateEmail(String value) {
+    Random random = new Random();
+    int randomNumber = random.nextInt(10000);
+    this.phoneno = "0114156" + randomNumber.toString();
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);

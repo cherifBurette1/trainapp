@@ -28,7 +28,7 @@ class Profile extends StatelessWidget {
           ),
           backgroundColor: blueAppColor,
         ),
-        floatingActionButton: _buildFloatingButton(),
+        //     floatingActionButton: _buildFloatingButton(),
         body: SingleChildScrollView(
           child: Stack(
             children: <Widget>[
@@ -126,12 +126,6 @@ class Profile extends StatelessWidget {
                         title: Text('Email',
                             style: TextStyle(color: blueAppColor)),
                         subtitle: Text("${userEmail}"),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.phone, color: blueAppColor),
-                        title: Text('Phone',
-                            style: TextStyle(color: blueAppColor)),
-                        subtitle: Text('+2' "${userPhone}"),
                       ),
                       ListTile(
                         leading: Icon(Icons.home, color: blueAppColor),

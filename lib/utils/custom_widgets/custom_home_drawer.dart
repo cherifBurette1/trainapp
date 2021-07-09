@@ -64,6 +64,7 @@ class CustomHomeDrawer extends StatelessWidget {
                     ),
                     onTap: () {},
                   ),
+                  Divider(),
                   ListTile(
                       leading: Icon(Icons.person, color: primaryAppColor),
                       title: Text(
@@ -76,6 +77,7 @@ class CustomHomeDrawer extends StatelessWidget {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Profile()));
                       }),
+                  Divider(),
                   ListTile(
                       leading: Icon(Icons.location_on, color: primaryAppColor),
                       title: Text(
@@ -90,26 +92,6 @@ class CustomHomeDrawer extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => StationsTest()));
                       }),
-                  ListTile(
-                      leading: SvgPicture.asset(
-                        "images/train.svg",
-                        fit: BoxFit.cover,
-                        width: 20,
-                        height: 23,
-                        color: primaryAppColor,
-                      ),
-                      title: Text(
-                        'Tracking My Train',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: primaryAppColor),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TrainTracking()));
-                      }),
                   Divider(),
                   ListTile(
                     leading: Icon(Icons.phone, color: primaryAppColor),
@@ -122,6 +104,7 @@ class CustomHomeDrawer extends StatelessWidget {
                       launch("tel://5050");
                     },
                   ),
+                  Divider(),
                   ListTile(
                     leading: Icon(Icons.settings, color: primaryAppColor),
                     title: Text(

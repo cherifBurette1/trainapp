@@ -15,6 +15,7 @@ import 'package:railway/utils/navigator.dart';
 import 'package:xs_progress_hud/xs_progress_hud.dart';
 
 DateTime dates;
+int vcode;
 
 class Api {
   String baseUrl = 'https://railway-project.herokuapp.com/api/';
