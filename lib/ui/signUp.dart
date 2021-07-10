@@ -44,7 +44,7 @@ class _SignUpState extends State<SignUp> {
   UsersModel usersModel;
 
   bool checkValue = false;
-  bool _isHidden = false;
+  bool _isHidden = true;
 
   void _toggleVisibility() {
     setState(() {
@@ -59,6 +59,7 @@ class _SignUpState extends State<SignUp> {
 
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+  var repasswordController = TextEditingController();
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
   var phoneCodeController = TextEditingController();
@@ -167,6 +168,35 @@ class _SignUpState extends State<SignUp> {
                               ),
                               hintStyle: TextStyle(color: greyPrimaryColor)),
                         ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: repasswordController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: validatePassword,
+                          obscureText: _isHidden,
+                          style: TextStyle(color: whiteColor),
+                          cursorColor: primaryAppColor,
+                          decoration: InputDecoration(
+                              fillColor: greyPrimaryColor.withOpacity(.1),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(5)),
+                              hintText: 're-type Password',
+                              suffixIcon: IconButton(
+                                onPressed: _toggleVisibility,
+                                icon: _isHidden
+                                    ? Icon(
+                                        Icons.visibility_off,
+                                        color: greyPrimaryColor,
+                                      )
+                                    : Icon(
+                                        Icons.visibility,
+                                        color: whiteColor,
+                                      ),
+                              ),
+                              hintStyle: TextStyle(color: greyPrimaryColor)),
+                        ),
                         SizedBox(height: 20),
                         Container(
                             alignment: Alignment.bottomLeft,
@@ -186,56 +216,64 @@ class _SignUpState extends State<SignUp> {
                               onTap: () {
                                 _validateInputs();
                                 if (formKey.currentState.validate()) {
-                                  Api(context)
-                                      .userRegister(
-                                          scafoldState,
-                                          nameController.text,
-                                          emailController.text,
-                                          passwordController.text,
-                                          passwordController.text,
-                                          phoneno)
-                                      .then((value) {
-                                    if (value is UsersModel) {
-                                      usersModel = value;
-                                      Future.delayed(
-                                          Duration(milliseconds: 250), () {
-                                        print(
-                                            "_isSelected_isSelected ${_isSelected}");
-                                        if (_isSelected) {
-                                          setUserTocken(
-                                            auth_token: usersModel
-                                                .token.plainTextToken
-                                                .split("|")[1],
-                                            userId: usersModel.user.id,
-                                            userName: usersModel.user.name,
-                                            userEmail: usersModel.user.email,
-                                            userJoinedTime: usersModel
-                                                .token.accessToken.createdAt,
-                                          ).then((value) {
-                                            UserTocken =
-                                                "Bearer ${usersModel.token.plainTextToken.split("|")[1]}";
-                                            userName = usersModel.user.name;
-                                            userEmail = usersModel.user.email;
+                                  if (passwordController.text ==
+                                      repasswordController.text) {
+                                    Api(context)
+                                        .userRegister(
+                                            scafoldState,
+                                            nameController.text,
+                                            emailController.text,
+                                            passwordController.text,
+                                            passwordController.text,
+                                            phoneno)
+                                        .then((value) {
+                                      if (value is UsersModel) {
+                                        usersModel = value;
+                                        Future.delayed(
+                                            Duration(milliseconds: 250), () {
+                                          print(
+                                              "_isSelected_isSelected ${_isSelected}");
+                                          if (_isSelected) {
+                                            setUserTocken(
+                                              auth_token: usersModel
+                                                  .token.plainTextToken
+                                                  .split("|")[1],
+                                              userId: usersModel.user.id,
+                                              userName: usersModel.user.name,
+                                              userEmail: usersModel.user.email,
+                                              userJoinedTime: usersModel
+                                                  .token.accessToken.createdAt,
+                                            ).then((value) {
+                                              UserTocken =
+                                                  "Bearer ${usersModel.token.plainTextToken.split("|")[1]}";
+                                              userName = usersModel.user.name;
+                                              userEmail = usersModel.user.email;
 
-                                            userJoinedTime = usersModel
-                                                .token.accessToken.createdAt;
-                                            userId = usersModel.user.id;
-                                            generate();
-                                            sendMail(usersModel.user.email);
-                                            navigateAndKeepStack(
-                                                context, box2());
-                                            // navigateAndKeepStack(context,Competitions());
-                                          });
-                                        }
+                                              userJoinedTime = usersModel
+                                                  .token.accessToken.createdAt;
+                                              userId = usersModel.user.id;
+                                              generate();
+                                              sendMail(usersModel.user.email);
+                                              navigateAndKeepStack(
+                                                  context, box2());
+                                              // navigateAndKeepStack(context,Competitions());
+                                            });
+                                          }
 //talent_id: 46
-                                        else {
-                                          CustomSnackBar(scafoldState, context,
-                                              "Accept terms and conditions");
-                                          // navigateAndKeepStack(context,Competitions());
-                                        }
-                                      });
-                                    }
-                                  });
+                                          else {
+                                            CustomSnackBar(
+                                                scafoldState,
+                                                context,
+                                                "Accept terms and conditions");
+                                            // navigateAndKeepStack(context,Competitions());
+                                          }
+                                        });
+                                      }
+                                    });
+                                  } else {
+                                    CustomSnackBar(scafoldState, context,
+                                        "Password do not match");
+                                  }
                                 } else
                                   CustomSnackBar(
                                       scafoldState, context, "Invalid Data !");

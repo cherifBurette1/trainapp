@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final items = [
-      HomeScreen(),
       Trips(),
       Tickets(),
       Profile(),
@@ -29,14 +28,12 @@ class _HomePageState extends State<HomePage> {
         drawer: CustomHomeDrawer(),
         bottomNavigationBar: Row(
           children: [
-            BuildNavBar('images/HomeIcon1.svg', 'images/HomeIcon2.svg', 'Home',
-                true, 0),
             BuildNavBar('images/destination2.svg', 'images/destination.svg',
-                'Trips', true, 1),
+                'Trips', true, 0),
             BuildNavBar(
-                'images/ticket.svg', 'images/ticket.svg', 'Tickets', true, 2),
+                'images/ticket.svg', 'images/ticket.svg', 'Tickets', true, 1),
             BuildNavBar('images/profile1.svg', 'images/profile2.svg', 'Profile',
-                true, 3),
+                true, 2),
           ],
         ),
         body: items[widget.currentIndex]);
@@ -53,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       child: Container(
           alignment: Alignment.center,
           height: 70,
-          width: MediaQuery.of(context).size.width / 4,
+          width: MediaQuery.of(context).size.width / 3,
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(

@@ -131,7 +131,7 @@ class Profile extends StatelessWidget {
                         leading: Icon(Icons.home, color: blueAppColor),
                         title: Text('Wallet',
                             style: TextStyle(color: blueAppColor)),
-                        subtitle: Text("${userWallet} L.E"),
+                        subtitle: checkwallet(),
                       ),
                       ListTile(
                         leading: Icon(Icons.date_range, color: blueAppColor),
@@ -238,5 +238,13 @@ class Profile extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  checkwallet() {
+    if (userWallet == null) {
+      return Text("0 L.E");
+    } else {
+      return Text("$userWallet L.E");
+    }
   }
 }

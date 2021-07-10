@@ -56,7 +56,7 @@ class _MapssState extends State<Mapss> {
 
       counter++;
       if (refresh == true) {
-        Future.delayed(const Duration(seconds: 30), () {
+        Future.delayed(const Duration(seconds: 5), () {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
