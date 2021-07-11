@@ -7,6 +7,8 @@ import 'package:railway/utils/bookticket_bottomSheet.dart';
 import 'package:railway/utils/bottomSheet.dart';
 import 'package:railway/utils/colors_file.dart';
 import 'package:railway/utils/bottomSheet.dart';
+import 'package:railway/utils/global_vars.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Trips extends StatefulWidget {
   final TripsModel trip;
@@ -30,6 +32,12 @@ class _TripsState extends State<Trips> {
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
       gettingData();
+      if (userWallet == 0) {
+        Fluttertoast.showToast(
+          msg:
+              "please note that you wont be able to book any trip as you have 0 LE in your wallet, please go to the station to load your wallet!",
+        );
+      }
     });
 //    showHud();
   }

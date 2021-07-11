@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:railway/ApiFunctions/Api.dart';
 import 'package:railway/models/trips_model.dart';
 import 'package:railway/ui/signUp.dart';
 import 'package:railway/ui/train_tracking/StationsRoute/stations_route.dart';
 import 'package:railway/utils/colors_file.dart';
 import 'package:railway/utils/custom_widgets/custom_button.dart';
+import 'package:railway/utils/global_vars.dart';
 import 'package:railway/utils/navigator.dart';
+import 'package:mailer/mailer.dart';
+
+import 'home_page.dart';
 
 dynamic train_id;
+
+sendMail(String mail) async {
+  String username = "railwaymti@gmail.com";
+  String password = "Ab1234566.";
+  final smtpServer = gmail(username, password);
+  final message = Message()
+    ..from = Address(username, 'railwayMTI')
+    ..recipients.add(mail)
+    ..subject = "Railway email verification"
+    ..html =
+        "<p>Railway MTI</p> <hr> <p>dear user,</p> <p>we are sending you this mail to notify you that you trip has been booked successfully and notifying you that no refunds are available under any circumstances</p> <p>Have a safe trip!</p>";
+
+  try {
+    final sendReport = await send(message, smtpServer);
+    print('message sent: ' + sendReport.toString());
+  } on MailerException catch (e) {
+    print('message not sent becase of ' + e.toString());
+  }
+}
 
 class Trip {
   final int id;
@@ -131,7 +155,6 @@ class _BookTicketState extends State<BookTicket> {
       backgroundColor: whiteColor,
       key: scafoldState,
       appBar: AppBar(
-          leading: Container(),
           backgroundColor: blueAppColor,
           bottom: PreferredSize(
             preferredSize: Size.square(20),
@@ -141,6 +164,11 @@ class _BookTicketState extends State<BookTicket> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  IconButton(
+                      color: Colors.white,
+                      onPressed: () => navigateAndClearStack(
+                          context, HomePage(currentIndex: 1)),
+                      icon: Icon(Icons.arrow_back)),
                   Container(
                     padding: const EdgeInsets.only(right: 30, left: 20),
                     child: Align(
@@ -353,6 +381,7 @@ class _BookTicketState extends State<BookTicket> {
                                           Api(context).bookTicketApi(
                                               scafoldState,
                                               classACar[index].id);
+                                          sendMail(userEmail);
                                         }
                                       : () {},
                                   child: Container(
@@ -466,6 +495,7 @@ class _BookTicketState extends State<BookTicket> {
                                           Api(context).bookTicketApi(
                                               scafoldState,
                                               classBCar[index].id);
+                                          sendMail(userEmail);
                                         }
                                       : () {},
                                   child: Container(

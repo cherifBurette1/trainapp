@@ -240,7 +240,6 @@ class Api {
     if (!(response.body).toString().contains('error')) {
       CustomSnackBar(_scaffoldKey, context, "Ticket Created Successfully");
       Future.delayed(Duration(seconds: 3), () {
-        navigateAndClearStack(context, HomePage(currentIndex: 2));
         // navigateAndClearStack(context, SplashScreen());
       });
       print(json.decode(response.body));

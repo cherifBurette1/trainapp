@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:railway/ApiFunctions/Api.dart';
 import 'package:railway/models/tickets.dart';
 import 'package:railway/utils/colors_file.dart';
@@ -11,6 +13,25 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+
+sendMail(String mail) async {
+  String username = "railwaymti@gmail.com";
+  String password = "Ab1234566.";
+  final smtpServer = gmail(username, password);
+  final message = Message()
+    ..from = Address(username, 'railwayMTI')
+    ..recipients.add(mail)
+    ..subject = "Railway email verification"
+    ..html =
+        "<p>Railway MTI</p> <hr> <p>dear user,</p> <p>we are sending you this mail to notify you that you trip has been cancelled successfully and upon our previous agreement no refunds are available under any circumstances</p> <p>Have a nice day!</p>";
+
+  try {
+    final sendReport = await send(message, smtpServer);
+    print('message sent: ' + sendReport.toString());
+  } on MailerException catch (e) {
+    print('message not sent becase of ' + e.toString());
+  }
+}
 
 int counter = 0;
 String startloc;
@@ -290,6 +311,7 @@ class _TicketsState extends State<Tickets> {
                                                               _scaffoldKey,
                                                               ticketsList[index]
                                                                   .seatId);
+                                                      sendMail(userEmail);
                                                     },
                                                     child: Text(
                                                       "delete",

@@ -6,7 +6,9 @@ class TicketsModel {
   TicketsModel.fromJson(Map<String, dynamic> json) {
     if (json['success'] != null) {
       success = new List<Success>();
-      json['success'].forEach((v) { success.add(new Success.fromJson(v)); });
+      json['success'].forEach((v) {
+        success.add(new Success.fromJson(v));
+      });
     }
   }
 
@@ -28,8 +30,12 @@ class Success {
   Success({this.userData, this.tripData, this.ticketTime, this.seatId});
 
   Success.fromJson(Map<String, dynamic> json) {
-    userData = json['user_data'] != null ? new UserData.fromJson(json['user_data']) : null;
-    tripData = json['trip_data'] != null ? new TripData.fromJson(json['trip_data']) : null;
+    userData = json['user_data'] != null
+        ? new UserData.fromJson(json['user_data'])
+        : null;
+    tripData = json['trip_data'] != null
+        ? new TripData.fromJson(json['trip_data'])
+        : null;
     ticketTime = json['ticket_time'];
     seatId = json['seat_id'];
   }
@@ -57,7 +63,14 @@ class UserData {
   String updatedAt;
   String phoneNumber;
 
-  UserData({this.id, this.name, this.email, this.emailVerifiedAt, this.createdAt, this.updatedAt, this.phoneNumber});
+  UserData(
+      {this.id,
+      this.name,
+      this.email,
+      this.emailVerifiedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.phoneNumber});
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,6 +94,7 @@ class UserData {
     return data;
   }
 }
+
 class TripData {
   Trip trip;
   String Class;
@@ -121,7 +135,19 @@ class Trip {
   List<Levels> levels;
 
   Trip(
-      {this.id, this.departTime, this.arrivalTime, this.status, this.baseId, this.destinationId, this.trainId, this.createdAt, this.updatedAt, this.pivot, this.baseStation, this.destinationStation, this.levels});
+      {this.id,
+      this.departTime,
+      this.arrivalTime,
+      this.status,
+      this.baseId,
+      this.destinationId,
+      this.trainId,
+      this.createdAt,
+      this.updatedAt,
+      this.pivot,
+      this.baseStation,
+      this.destinationStation,
+      this.levels});
 
   Trip.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -134,11 +160,12 @@ class Trip {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
-    baseStation = json['base_station'] != null ? new BaseStation.fromJson(
-        json['base_station']) : null;
-    destinationStation =
-    json['destination_station'] != null ? new BaseStation.fromJson(
-        json['destination_station']) : null;
+    baseStation = json['base_station'] != null
+        ? new BaseStation.fromJson(json['base_station'])
+        : null;
+    destinationStation = json['destination_station'] != null
+        ? new BaseStation.fromJson(json['destination_station'])
+        : null;
     if (json['levels'] != null) {
       levels = new List<Levels>();
       json['levels'].forEach((v) {
@@ -174,7 +201,6 @@ class Trip {
   }
 }
 
-
 class BaseStation {
   int id;
   String name;
@@ -200,24 +226,24 @@ class Levels {
   dynamic updatedAt;
   Pivot pivot;
 
-  Levels({this.id,  this.createdAt, this.updatedAt, this.pivot});
+  Levels({this.id, this.createdAt, this.updatedAt, this.pivot});
 
   Levels.fromJson(Map<String, dynamic> json) {
-  id = json['id'];
-  createdAt = json['created_at'];
-  updatedAt = json['updated_at'];
-  pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
+    id = json['id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
   }
 
   Map<String, dynamic> toJson() {
-  final Map<String, dynamic> data = new Map<String, dynamic>();
-  data['id'] = this.id;
-  data['created_at'] = this.createdAt;
-  data['updated_at'] = this.updatedAt;
-  if (this.pivot != null) {
-  data['pivot'] = this.pivot.toJson();
-  }
-  return data;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.pivot != null) {
+      data['pivot'] = this.pivot.toJson();
+    }
+    return data;
   }
 }
 
@@ -242,4 +268,3 @@ class Pivot {
     return data;
   }
 }
-
