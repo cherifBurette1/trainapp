@@ -120,6 +120,7 @@ class Api {
     Map<String, dynamic> dataContent = json.decode(response.body);
     XsProgressHud.hide();
     if (response.statusCode == 200) {
+      print(dataContent.toString());
       return TripsModel.fromJson(dataContent);
     } else if (response.statusCode == 401) {
       CustomSnackBar(

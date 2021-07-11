@@ -92,6 +92,7 @@ class _TripsState extends State<Trips> {
                               ),
                             )),
                       ),
+
                       Container(
                         padding: const EdgeInsets.only(
                             right: 30, left: 20, bottom: 10),
@@ -114,41 +115,44 @@ class _TripsState extends State<Trips> {
                     padding: const EdgeInsets.only(left: 20, right: 30),
                     child: SizedBox(
                       height: 60,
-                      child: TextFormField(
-                        style: TextStyle(color: primaryAppColor),
-                        onChanged: (text) {
-                          setState(() {
-                            text = text.toLowerCase();
-                            tripsListForDisplay = tripsList.where((element) {
-                              var title =
-                                  element.destinationStation.name.toLowerCase();
-                              return title.contains(text);
-                            }).toList();
-                          });
-                        },
-                        cursorColor: primaryAppColor,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide.none),
-                          fillColor: primaryAppColor.withOpacity(0.1),
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(color: blueAppColor)),
-                          suffixIcon: Icon(
-                            Icons.search,
-                            color: whiteColor,
+                      child: Column(children: [
+                        TextFormField(
+                          style: TextStyle(color: primaryAppColor),
+                          onChanged: (text) {
+                            setState(() {
+                              text = text.toLowerCase();
+                              tripsListForDisplay = tripsList.where((element) {
+                                var title = element.destinationStation.name
+                                    .toLowerCase();
+                                return title.contains(text);
+                              }).toList();
+                            });
+                          },
+                          cursorColor: primaryAppColor,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide.none),
+                            fillColor: primaryAppColor.withOpacity(0.1),
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide(color: blueAppColor)),
+                            suffixIcon: Icon(
+                              Icons.search,
+                              color: whiteColor,
+                            ),
+                            hintText: "Find your destination ...",
+                            hintStyle: TextStyle(color: greyPrimaryColor),
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10),
+                            // enabledBorder: InputBorder.none,
+                            // border: OutlineInputBorder(
+                            //     borderSide:
+                            //         BorderSide(color: primaryAppColor, width: .8)),
                           ),
-                          hintText: "Find your destination ...",
-                          hintStyle: TextStyle(color: greyPrimaryColor),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          // enabledBorder: InputBorder.none,
-                          // border: OutlineInputBorder(
-                          //     borderSide:
-                          //         BorderSide(color: primaryAppColor, width: .8)),
                         ),
-                      ),
+                      ]),
                     ),
                   )
                 ],

@@ -30,7 +30,7 @@ GoogleMapController _controller;
 dynamic loca = LatLng(31.218610752908937, 29.942156790466374);
 getTrainmarker() async {
   customMarker = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration.empty, 'images/train_png.png');
+      ImageConfiguration(size: Size(2, 2)), 'images/train_icon.png');
 }
 
 class Mapss extends StatefulWidget {
@@ -42,7 +42,7 @@ class Mapss extends StatefulWidget {
 class _MapssState extends State<Mapss> {
   Future<Uint8List> getMarker() async {
     ByteData byteData =
-        await DefaultAssetBundle.of(context).load("images/train_png1.png");
+        await DefaultAssetBundle.of(context).load("images/train_png1.ico");
     return byteData.buffer.asUint8List();
   }
 
@@ -50,6 +50,7 @@ class _MapssState extends State<Mapss> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getTrainmarker();
+
       createPolyline();
       getcurrentlocation();
       checkstation();
@@ -442,118 +443,33 @@ class _MapssState extends State<Mapss> {
       }
     }
     if (startloc == 'Damanhour' && endloc == 'Cairo') {
-      dynamic response1 =
-          await rootBundle.loadString('assets/json/damtanta.json');
-      dynamic responsedata1 = await json.decode(response1);
-      dynamic response2 =
-          await rootBundle.loadString('assets/json/tantabanha.json');
-      dynamic responsedata2 = await json.decode(response2);
-      dynamic response3 =
-          await rootBundle.loadString('assets/json/banhacairo.json');
-      dynamic responsedata3 = await json.decode(response3);
-      if (asas.hour > DateTime.now().hour &&
-          asas.minute > DateTime.now().minute) {
-        if (responsedata1[counter.toString()]['lat'] != false) {
-          if (counter == 0) {
-            setState(() {
-              counter = 26;
-            });
-          }
-          setState(() {
-            counter--;
-          });
-          getrainlocation(counter, responsedata1);
-        } else if (responsedata2[counter1.toString()]['lat'] != false) {
-          if (counter1 == 0) {
-            setState(() {
-              counter1 = 26;
-            });
-          }
-          setState(() {
-            counter1--;
-          });
-          getrainlocation(counter1, responsedata2);
-        } else if (responsedata2[counter2.toString()]['lat'] != false) {
-          setState(() {
-            if (counter3 == 0) {
-              setState(() {
-                counter3 = 26;
-              });
-            }
-            counter3--;
-          });
-          getrainlocation(counter3, responsedata3);
-        }
-      } else if (asas.hour == DateTime.now().hour &&
-          asas.minute == DateTime.now().minute) {
-        setState(() {
-          counter = 0;
-        });
-        getrainlocation(counter, responsedata1);
-      } else if (bsbs.hour < DateTime.now().hour &&
-          bsbs.minute < DateTime.now().minute) {
-        setState(() {
-          counter3 = 0;
-        });
-        getrainlocation(counter3, responsedata3);
-      }
-    }
-    if (startloc == 'banha' && endloc == 'Cairo') {
-      dynamic response =
-          await rootBundle.loadString('assets/json/banhacairo.json');
+      dynamic response = await rootBundle.loadString('assets/json/2.json');
       dynamic responsedata = await json.decode(response);
       if (asas.hour > DateTime.now().hour &&
           asas.minute > DateTime.now().minute) {
-        setState(() {
-          counter++;
-        });
-        getrainlocation(counter, responsedata);
-      } else if (asas.hour == DateTime.now().hour &&
-          asas.minute == DateTime.now().minute) {
-        setState(() {
-          counter = 0;
-        });
-        getrainlocation(counter, responsedata);
-      }
-      if (bsbs.hour < DateTime.now().hour &&
-          bsbs.minute < DateTime.now().minute) {
-        setState(() {
-          counter = 29;
-        });
-        getrainlocation(counter, responsedata);
-      }
-    }
-    if (startloc == 'banha' && endloc == 'Tanta') {
-      dynamic response1 =
-          await rootBundle.loadString('assets/json/tantabanha.json');
-      dynamic responsedata1 = await json.decode(response1);
-      if (asas.hour > DateTime.now().hour &&
-          asas.minute > DateTime.now().minute) {
-        if (responsedata1[counter.toString()]['lat'] != false) {
-          if (counter == 0) {
+        if (responsedata[counter.toString()]['lat'] != false) {
+          if (counter == 65) {
             setState(() {
-              counter = 12;
+              counter = 0;
             });
-          } else {
             setState(() {
-              counter--;
+              counter++;
             });
+            getrainlocation(counter, responsedata);
           }
-          getrainlocation(counter, responsedata1);
+        } else if (asas.hour == DateTime.now().hour &&
+            asas.minute == DateTime.now().minute) {
+          setState(() {
+            counter = 0;
+          });
+          getrainlocation(counter, responsedata);
+        } else if (bsbs.hour < DateTime.now().hour &&
+            bsbs.minute < DateTime.now().minute) {
+          setState(() {
+            counter = 65;
+          });
+          getrainlocation(counter, responsedata);
         }
-      } else if (asas.hour == DateTime.now().hour &&
-          asas.minute == DateTime.now().minute) {
-        setState(() {
-          counter = 12;
-        });
-        getrainlocation(counter, responsedata1);
-      }
-      if (bsbs.hour < DateTime.now().hour &&
-          bsbs.minute < DateTime.now().minute) {
-        setState(() {
-          counter = 0;
-        });
-        getrainlocation(counter1, responsedata1);
       }
     }
     if (startloc == 'banha' && endloc == 'Damanhour') {
@@ -816,75 +732,36 @@ class _MapssState extends State<Mapss> {
       }
     }
     if (startloc == 'Cairo' && endloc == 'Alex') {
-      dynamic response =
-          await rootBundle.loadString('assets/json/alexdam.json');
+      dynamic response = await rootBundle.loadString('assets/json/1.json');
       dynamic responsedata = await json.decode(response);
-      dynamic response1 =
-          await rootBundle.loadString('assets/json/damtanta.json');
-      dynamic responsedata1 = await json.decode(response1);
-      dynamic response2 =
-          await rootBundle.loadString('assets/json/tantabanha.json');
-      dynamic responsedata2 = await json.decode(response2);
-      dynamic response3 =
-          await rootBundle.loadString('assets/json/banhacairo.json');
-      dynamic responsedata3 = await json.decode(response3);
       if (asas.hour > DateTime.now().hour &&
           asas.minute > DateTime.now().minute) {
-        if (responsedata3[counter.toString()]['lat'] != false) {
-          if (counter == 0) {
+        if (responsedata[counter.toString()]['lat'] != false) {
+          if (counter == 92) {
             setState(() {
-              counter = 29;
+              counter = 0;
             });
             setState(() {
-              counter--;
+              counter++;
             });
-            getrainlocation(counter, responsedata3);
-          } else if (responsedata2[counter1.toString()]['lat'] != false) {
-            if (counter1 == 0) {
-              setState(() {
-                counter3 = 12;
-              });
-              setState(() {
-                counter1--;
-              });
-              getrainlocation(counter1, responsedata2);
-            } else if (responsedata1[counter2.toString()]['lat'] != false) {
-              if (counter1 == 0) {
-                setState(() {
-                  counter3 = 26;
-                });
-                setState(() {
-                  counter2--;
-                });
-                getrainlocation(counter2, responsedata1);
-              } else {
-                if (counter3 == 0) {
-                  setState(() {
-                    counter3 = 25;
-                  });
-                }
-                setState(() {
-                  counter3--;
-                });
-                getrainlocation(counter3, responsedata);
-              }
-            } else if (asas.hour == DateTime.now().hour &&
-                asas.minute == DateTime.now().minute) {
-              setState(() {
-                counter = 0;
-              });
-              getrainlocation(counter, responsedata3);
-            } else if (bsbs.hour < DateTime.now().hour &&
-                bsbs.minute < DateTime.now().minute) {
-              setState(() {
-                counter3 = 0;
-              });
-              getrainlocation(counter3, responsedata);
-            }
+            getrainlocation(counter, responsedata);
           }
+        } else if (asas.hour == DateTime.now().hour &&
+            asas.minute == DateTime.now().minute) {
+          setState(() {
+            counter = 0;
+          });
+          getrainlocation(counter, responsedata);
+        } else if (bsbs.hour < DateTime.now().hour &&
+            bsbs.minute < DateTime.now().minute) {
+          setState(() {
+            counter = 92;
+          });
+          getrainlocation(counter, responsedata);
         }
       }
     }
+
     if (startloc == 'Cairo' && endloc == 'Damanhour') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/damtanta.json');
@@ -1022,5 +899,15 @@ class _MapssState extends State<Mapss> {
     setState(() {
       refresh = false;
     });
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
   }
 }

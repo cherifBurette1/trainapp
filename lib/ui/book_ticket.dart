@@ -334,6 +334,7 @@ class _BookTicketState extends State<BookTicket> {
                       : Container(
                           width: MediaQuery.of(context).size.width,
                           // height: 50,
+
                           child: GridView.builder(
                             itemCount: classACar.length,
                             shrinkWrap: true,
@@ -394,50 +395,51 @@ class _BookTicketState extends State<BookTicket> {
                           color: Colors.brown.shade400,
                           elevation: 10,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: MediaQuery.of(context).size.width,
-                              child: Text(
-                                "Class B",
-                                style:
-                                    TextStyle(fontSize: 20, color: whiteColor),
-                              ),
-                            ),
-                          ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Text(
+                                    "Class B",
+                                    style: TextStyle(
+                                        fontSize: 20, color: whiteColor),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(.1),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: DropdownButton(
+                                    icon: Icon(Icons.keyboard_arrow_down,
+                                        color: Color(0xffb8c3cb)),
+                                    isExpanded: true,
+                                    underline: SizedBox(),
+                                    dropdownColor: whiteColor,
+                                    style: TextStyle(color: blackColor),
+                                    value: train_id,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        train_id = newValue;
+                                        print(train_id);
+                                      });
+                                    },
+                                    hint: Text('car 1'),
+                                    items: trips.map((valueItem) {
+                                      return DropdownMenuItem(
+                                        value: valueItem.id,
+                                        child: Text(valueItem.name),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                              ])),
                         ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    width: MediaQuery.of(context).size.width / 3,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(.1),
-                        borderRadius: BorderRadius.circular(5)),
-                    child: DropdownButton(
-                      icon: Icon(Icons.keyboard_arrow_down,
-                          color: Color(0xffb8c3cb)),
-                      isExpanded: true,
-                      underline: SizedBox(),
-                      dropdownColor: whiteColor,
-                      style: TextStyle(color: blackColor),
-                      value: train_id,
-                      onChanged: (newValue) {
-                        setState(() {
-                          train_id = newValue;
-                          print(train_id);
-                        });
-                      },
-                      hint: Text('car 1'),
-                      items: trips.map((valueItem) {
-                        return DropdownMenuItem(
-                          value: valueItem.id,
-                          child: Text(valueItem.name),
-                        );
-                      }).toList(),
-                    ),
-                  ),
                   SizedBox(
                     height: 20,
                   ),
