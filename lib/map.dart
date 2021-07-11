@@ -27,7 +27,7 @@ var allMarkers = HashSet<Marker>();
 List<Polyline> myPolyline = [];
 BitmapDescriptor customMarker;
 GoogleMapController _controller;
-dynamic loca = LatLng(31.218610752908937, 29.942156790466374);
+dynamic loca = LatLng(30.06460723927716, 31.25022562739004);
 getTrainmarker() async {
   customMarker = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(size: Size(2, 2)), 'images/train_icon.png');
@@ -181,10 +181,23 @@ class _MapssState extends State<Mapss> {
         ]));
   }
 
+  initmark() {
+    if (endloc == "Cairo") {
+      print("imhere");
+      setState(() {
+        LatLng(31.031580857134745, 30.488025875983332);
+      });
+    } else {
+      setState(() {
+        LatLng(30.06460723927716, 31.25022562739004);
+      });
+    }
+  }
+
   checkstation() async {
     print(startloc);
     print(endloc);
-    if (startloc == 'Alex' && endloc == 'Damanhour') {
+    if (endloc == 'Alex' && startloc == 'Damnhour') {
       dynamic response =
           await rootBundle.loadString('assets/json/alexdam.json');
       dynamic responsedata = await json.decode(response);
@@ -209,7 +222,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter, responsedata);
       }
     }
-    if (startloc == 'Alex' && endloc == 'Tanta') {
+    if (endloc == 'Alex' && startloc == 'Tanta') {
       dynamic response =
           await rootBundle.loadString('assets/json/alexdam.json');
       dynamic responsedata = await json.decode(response);
@@ -244,7 +257,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter1, responsedata1);
       }
     }
-    if (startloc == 'Alex' && endloc == 'banha') {
+    if (endloc == 'Alex' && startloc == 'banha') {
       dynamic response =
           await rootBundle.loadString('assets/json/alexdam.json');
       dynamic responsedata = await json.decode(response);
@@ -285,7 +298,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter2, responsedata2);
       }
     }
-    if (startloc == 'Alex' && endloc == 'Cairo') {
+    if (endloc == 'Alex' && startloc == 'Cairo') {
       dynamic response =
           await rootBundle.loadString('assets/json/alexdam.json');
       dynamic responsedata = await json.decode(response);
@@ -335,7 +348,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter3, responsedata3);
       }
     }
-    if (startloc == 'Damanhour' && endloc == 'Alex') {
+    if (endloc == 'Damnhour' && startloc == 'Alex') {
       dynamic response =
           await rootBundle.loadString('assets/json/alexdam.json');
       dynamic responsedata = await json.decode(response);
@@ -365,7 +378,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter, responsedata);
       }
     }
-    if (startloc == 'Damanhour' && endloc == 'Tanta') {
+    if (endloc == 'Damnhour' && startloc == 'Tanta') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/damtanta.json');
       dynamic responsedata1 = await json.decode(response1);
@@ -398,7 +411,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter1, responsedata1);
       }
     }
-    if (startloc == 'Damanhour' && endloc == 'banha') {
+    if (endloc == 'Damnhour' && startloc == 'banha') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/damtanta.json');
       dynamic responsedata1 = await json.decode(response1);
@@ -442,7 +455,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter2, responsedata2);
       }
     }
-    if (startloc == 'Damanhour' && endloc == 'Cairo') {
+    if (endloc == 'Damnhour' && startloc == 'Cairo') {
       dynamic response = await rootBundle.loadString('assets/json/2.json');
       dynamic responsedata = await json.decode(response);
       if (asas.hour > DateTime.now().hour &&
@@ -472,7 +485,7 @@ class _MapssState extends State<Mapss> {
         }
       }
     }
-    if (startloc == 'banha' && endloc == 'Damanhour') {
+    if (endloc == 'banha' && startloc == 'Damnhour') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/damtanta.json');
       dynamic responsedata1 = await json.decode(response1);
@@ -516,7 +529,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter2, responsedata2);
       }
     }
-    if (startloc == 'banha' && endloc == 'Alex') {
+    if (endloc == 'banha' && startloc == 'Alex') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/damtanta.json');
       dynamic responsedata1 = await json.decode(response1);
@@ -570,7 +583,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter3, responsedata2);
       }
     }
-    if (startloc == 'Tanta' && endloc == 'banha') {
+    if (endloc == 'Tanta' && startloc == 'banha') {
       dynamic response =
           await rootBundle.loadString('assets/json/tantabanha.json');
       dynamic responsedata = await json.decode(response);
@@ -600,7 +613,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter, responsedata);
       }
     }
-    if (startloc == 'Tanta' && endloc == 'Damanhour') {
+    if (endloc == 'Tanta' && startloc == 'Damnhour') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/damtanta.json');
       dynamic responsedata1 = await json.decode(response1);
@@ -633,7 +646,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter, responsedata1);
       }
     }
-    if (startloc == 'Tanta' && endloc == 'Alex') {
+    if (endloc == 'Tanta' && startloc == 'Alex') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/damtanta.json');
       dynamic responsedata1 = await json.decode(response1);
@@ -677,7 +690,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter2, responsedata1);
       }
     }
-    if (startloc == 'Tanta' && endloc == 'Cairo') {
+    if (endloc == 'Tanta' && startloc == 'Cairo') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/banhacairo.json');
       dynamic responsedata1 = await json.decode(response1);
@@ -731,7 +744,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter3, responsedata1);
       }
     }
-    if (startloc == 'Cairo' && endloc == 'Alex') {
+    if (endloc == 'Cairo' && startloc == 'Alex') {
       dynamic response = await rootBundle.loadString('assets/json/1.json');
       dynamic responsedata = await json.decode(response);
       if (asas.hour > DateTime.now().hour &&
@@ -762,7 +775,7 @@ class _MapssState extends State<Mapss> {
       }
     }
 
-    if (startloc == 'Cairo' && endloc == 'Damanhour') {
+    if (endloc == 'Cairo' && startloc == 'Damnhour') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/damtanta.json');
       dynamic responsedata1 = await json.decode(response1);
@@ -819,7 +832,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter3, responsedata1);
       }
     }
-    if (startloc == 'Cairo' && endloc == 'banha') {
+    if (endloc == 'Cairo' && startloc == 'banha') {
       dynamic response =
           await rootBundle.loadString('assets/json/banhacairo.json');
       dynamic responsedata = await json.decode(response);
@@ -849,7 +862,7 @@ class _MapssState extends State<Mapss> {
         getrainlocation(counter, responsedata);
       }
     }
-    if (startloc == 'Cairo' && endloc == 'Tanta') {
+    if (endloc == 'Cairo' && startloc == 'Tanta') {
       dynamic response1 =
           await rootBundle.loadString('assets/json/banhacairo.json');
       dynamic responsedata1 = await json.decode(response1);
